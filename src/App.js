@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Auth0Provider } from "@auth0/auth0-react";
+import Login from "./components/Login";
+import Home from "./components/Home";
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+    const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+
+    return (
+        <Auth0Provider
+            domain={domain}
+            clientId={clientId}
+            redirectUri={"http://localhost:4100/home"}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <Router>
+                <div className="App">
+                    <Routes>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/" element={<Login />} />
+                    </Routes>
+                </div>
+            </Router>
+        </Auth0Provider>
+    );
 }
 
 export default App;
